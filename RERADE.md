@@ -1,6 +1,5 @@
-1.安装anaconda
-
-2.使用自带的jupyter notebook
+locate xxx
+sudo /usr/libexec/locate.updatedb
 
 3.numpy:数组与矩阵运算 ndarray,ufunf
   pandas：二维表格处理 series，dataFrame,index

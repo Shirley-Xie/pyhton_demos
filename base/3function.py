@@ -11,19 +11,41 @@
 # 参数使用
 语法:func(positional_args,keyword_args,*tuple_nonkw_args,**dict_kw_args)
  按参数传递方式:
-	 位置参数(定位参数，非关键字参数) :位置顺序十分重要
-	 关键字参数:
 	 位置参数包裹及使用*
 	 关键字参数包裹及使用**
 	 包裹解包顺序
 	 传递参数时使用包裹
- 按参数的类型:
-	 必选(位置参数)
-	 关键字/默认
-	 *args可变长位置参数，**kwargs可变长关键字参数
  函数如何处理传入参数:
 	 值传递参数与指针传递参数
+"""
+"""
+2.要求创建一个函数，它可以接收，位置参数， 不定长位置参数，不定长关键词参数，并按 要求输出 。
+ 输入班级名，班级特色(如’勤奋’,’颜值 高’ )等等不同特色，班级不同同学的姓 名与年龄。
+ 要求输出，班级名，班级特色，班级成员， 班级成员的平均年龄。
+"""
+#默认参数
+def myp(str, age=35): # 默认放在最后，age=35关键字参数，str:位置参数
+	print(str,age)
+myp('go')
 
+# 不定长参数，*args：位置, **kwargs：关键字,toupe,dict
+def class_(className, *args, **kwargs):
+    # con = lambda x : sum(x)/len(x)
+	ret = {'班级姓名':className,
+		'班级特色':args,
+		'班级成员':kwargs['name'],
+		'班级平均年龄': sum(kwargs['age'])/len(kwargs['age']),
+		# '班级平均年龄': con(kwargs['age'])
+	}
+	return ret
+
+name = ['xie','li','zhang']
+age=[32,21,34]
+ret = class_('18班', '勤奋','颜值高',name=name,age=age)
+print(45,ret)
+
+
+"""
  理解变量的作用域
 标识符的作用域
 locals()
@@ -56,9 +78,9 @@ sorted(d1.items(),key=lambda x:(x[1]))
 def mycalucate(num,func):
     return func
 
-#回调函数:函数作为调用函数的结果返回
-def callbackfunc(*num):
-    return max
+									#回调函数:函数作为调用函数的结果返回
+									def callbackfunc(*num):
+									    return max
 
 
 """
@@ -110,25 +132,7 @@ def from_s2b(*args):
 # from_s2b(3,9,5)
 # sorted()和sort()的比较
 
-"""
-2.要求创建一个函数，它可以接收，位置参数， 不定长位置参数，不定长关键词参数，并按 要求输出 。
- 输入班级名，班级特色(如’勤奋’,’颜值 高’ )等等不同特色，班级不同同学的姓 名与年龄。
- 要求输出，班级名，班级特色，班级成员， 班级成员的平均年龄。
-"""
-def class_(className, *args, **kwargs):
-    # con = lambda x : sum(x)/len(x)
-	ret = {'班级姓名':className,
-		'班级特色':args,
-		'班级成员':kwargs['name'],
-		'班级平均年龄': sum(kwargs['age'])/len(kwargs['age']),
-		# '班级平均年龄': con(kwargs['age'])
-	}
-	return ret
 
-name = ['xie','li','zhang']
-age=[32,21,34]
-ret = class_('18班', '勤奋','颜值高',name=name,age=age)
-# print(ret)
 
 # 匿名函数问题
 

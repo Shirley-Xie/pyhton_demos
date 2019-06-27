@@ -1,35 +1,20 @@
-
-class OldStyle:
-    def __init__(self, name, description):
-        self.name = name
-        self.description = description
-
-
-class NewStyle(object):
-
-    def __init__(self, name, description):
-        self.name = name
-        self.age = description
-
-
+# 类与对象。类名，属性，方法，继承，封装：数据「私有」，方法，多态
 class Programer(object):
     hobby = 'play computer'
-
+    # super 是用来解决多重继承问题的,就是继承的具体操作
     def __new__(cls, *args, **kwargs):
-        print('call __new__method')
-        # print(*args)
         return super(Programer, cls).__new__(cls)   # 在2中返回所有 (cls, *args, **kwargs)
 
     def __init__(self, name, age, weight):
         #访问控制
-        print('call __init__method')
         self.name = name #可以公开访问pulic
-        self.__weight = weight  # 部分私有属性
+        self.__weight = weight  
+
         if isinstance(age, int):
             self._age = age #约定：私有属性private
         else:
             raise Exception('age must ge int')
-
+    # 部分私有属性，只能用方法外流
     def get_weight(self):
         return self.__weight
 
@@ -47,11 +32,11 @@ class Programer(object):
 class BackendProgramer(Programer):
 
     def __init__(self, name, age, weight, language):
-        super(BackendProgramer, self).__init__(name, age, weight)
+        super(BackendProgramer, self).__init__(name, age, weight) # 都会调用父类一遍，然后才自己
         self.language = language
 
     def self_introduction(self):
-        print('My Name is %s\nMy favorite language is %s\n' % (self.name, self.language))
+        print('My Name is %s\nMy favorite language is %s\n' % (self.name, self.language)) # 因为super过了父类
 
 def introduce(programer):
     if isinstance(programer, Programer):
@@ -61,19 +46,18 @@ def introduce(programer):
 if __name__ == '__main__':
     #定义类属性
     programer = Programer('xie', 25, 60)
-    print('-----定义类的属性-----------')
-    print(dir(programer))   # 获取属性方法列表
-    print(programer.__dict__)   # 从构造函数中获取属性键值对
-    print(programer.get_weight())   # 部分私有属性，类可访问，实例无法直接访问
-    print(programer._Programer__weight)     # 实例化后可通过实例名._类名__weight访问
-    print('------定义类的方法之属性----------')
-    print(programer.get_weight)    # 类的方法也是类的属性，是 method 类型的属性
+    dir(programer)  # 获取属性方法列表
+    programer.__dict__  # 从构造函数中获取属性键值对{'name': 'xie', '_Programer__weight': 60, '_age': 25}
+    programer.get_weight()  # 部分私有属性，类可访问，实例无法直接访问,60
+    programer._Programer__weight # 实例化后可通过实例名._类名__weight访问,60
+
+    programer.get_weight   # 类的方法也是类的属性，是 method 类型的属性
     programer.get_weight = 'change'
-    print(programer.get_weight)     # 访问控制同属性
+    programer.get_weight     # 访问控制同属性 change
     print('----定义类的方法之修饰符-----------')
-    print(Programer.get_hobby())    # @classmethod,针对直接在类写的属性，用类直接名调用
+    Programer.get_hobby()   # @classmethod,针对直接在类写的属性，用类直接名调用
     print(programer.get_name)   # property，为了增加修改的限制
-    print(programer.self_introduction())    # 正常调用
+
     print('---------------继承-------------')
     back_programer = BackendProgramer('xiao', 35, 70, 'python')
     print(dir(back_programer))
@@ -86,12 +70,3 @@ if __name__ == '__main__':
     print(introduce(back_programer))
 
 
-    '''old = OldStyle('old', 'Old style class')
-    print(old)
-    print(type(old))
-    print(dir(old))
-    print(dir())
-    print('-------------------------')
-    new = NewStyle('new', 'new style class')
-    print(new, type(new), dir(new))
-    print(dir())'''

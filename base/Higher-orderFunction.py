@@ -8,64 +8,41 @@
     传入和传出都为函数：装饰器
 
 """
+
+from operator import itemgetter, attrgetter
 from functools import reduce
 import functools
+student_tuples = [('john', 'A', 15),('jane', 'B', 12),('dave', 'B', 10)]
+# itemgetter
+sorted(student_tuples, key=itemgetter(2))
 
+class Student:
+    def __init__(self, name, grade, age):
+        self.name = name
+        self.grade = grade
+        self.age = age
+    def __repr__(self):
+        return repr((self.name, self.grade, self.age))
 
-# map(func, *iterables) --> map object
-def map_(lis):
-    def f(x):
-        return x**2
-
-    L = []
-    for n in lis:
-        L.append(f(n))
-    # 等价于
-    Lt = list(map(f, lis))
-    # 使用匿名函数
-    list(map(lambda x: x**2, lis))
-    return Lt
-
-
-# reduce 2个数值运算
-def add_(lis):
-    def add(x, y):
-        return x+y
-
-    L_ad = 0
-    for n in lis:
-        L_ad += n
-    # 等价于
-    L_add = reduce(add, lis)
-    # 匿名函数
-    reduce(lambda x, y: x+y, lis)
-    return L_add
-
+student_objects = [Student('john', 'A', 15),Student('jane', 'B', 12),Student('dave', 'B', 10)]
 
 lis = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-map_ = map_(lis)
-add_ = add_(lis)
+list(map(lambda x: x**2, lis)) # 结果要用list展示[1, 4, 9, 16, 25, 36, 49, 64, 81]
+reduce(lambda x, y: x+y, lis) # 叠加，只有一个值，45
+# attrgetter
+sorted(student_objects, key=attrgetter('age'))
 
 
-def str2int(s):
-    def fn(x, y):
-        return x * 10 + y
 
-    def char2num(s):
-        return {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9}[s]
-    return reduce(fn, map(char2num, s))
-
-
-# 使用匿名函数
+# 将数值转化为int
 def str2int2(s):
     def char2num(s):
         return {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9}[s]
 
     return reduce(lambda x, y: x * 10 + y, map(char2num, s))
-# 调用str2int
-first = str2int('12345')
-second = str2int2('56789')
 
+second = str2int2('56789')
+print(second)
 
 # filter过滤空字符串
 def not_empty(s):

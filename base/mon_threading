@@ -1,0 +1,87 @@
+import threading
+import time
+from queue import Queue
+
+def thread_job():
+    print('T1 start number is %s \n'%threading.current_thread())
+    time.sleep(1)
+    print('T1 finish\n')
+    
+def thread_job2():
+    print('T2 start\n')
+    print('T2 finish\n')
+    
+def job(l,q):
+    for i in range(len(l)):
+        l[i] = l[i]**2
+    q.put(l)
+   
+def multithreading():
+    q = Queue()
+    threads = []
+    data = [[1,2,3],[3,4,5]]
+    
+    for i in range(2):
+        t = threading.Thread(target=job,args=(data[i],q))
+        t.start()
+        threads.append(t)
+#         t.join()
+
+    for thread in threads:
+        thread.join()
+    result = []
+    
+    for _ in range(4):
+        result.append(q.get())
+    print(result)    
+def job1():
+    global A,lock
+#     lock.acquire()
+    for i in range(100):
+        A+=1
+        print('job1', A)
+#     lock.release()    
+        
+def job2():
+    global A,lock
+#     lock.acquire()
+    for i in range(10):
+        A+=10
+        print('job2', A)
+#     lock.release()
+        
+def main():
+    add_thread = threading.Thread(target=thread_job,name='T1')
+    add_thread.start()
+    add_thread2 = threading.Thread(target=thread_job2,name='T2')
+    add_thread2.start()
+    # 若想将all——down在运行所有后操作则使用jion
+    add_thread2.join()
+    print('all done')
+#     print(threading.active_count())
+#     # 查看是哪些
+#     print(threading.enumerate())
+#     print(threading.current_thread())
+
+# 返回值，每个线程结果放到队列中，到主线程再拿出来，进行计算
+
+    
+if __name__ == '__main__':
+    A = 0
+    lock = threading.Lock()
+    t1 = threading.Thread(target=job1)
+    t2 = threading.Thread(target=job2)
+    t1.start()
+    t2.start()
+    t1.join()
+    
+    """
+    GIL，Global Interpreter Lock全局解释器锁
+    *** 单核，存在I/O交替问题，结果可能不理想，若是分工明确的话就会有一定的作用
+    """
+    """
+    锁，若上面一个结果给下一个时，共享内存加工处理用到
+    """
+    #这是想说同时操作？
+#     multithreading()
+#     main()
